@@ -118,7 +118,7 @@ const AllBloodDonationRequestPage = () => {
                       🏥 {req.hospital}
                     </div>
                     <div className="text-xs text-gray-400">
-                      📍 {req.district}, {req.division}
+                      📍 {req.district}, {req.region}
                     </div>
                   </td>
 

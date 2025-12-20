@@ -5,7 +5,6 @@ import AdminDashboardLayout from "../layouts/AdminDashboardLayout";
 import VolunteerDashboardLayout from "../layouts/VolunteerDashboardLayout";
 import ProtectedRoute from "../components/ProtectedRoute";
 
-
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
@@ -13,11 +12,9 @@ import ErrorPage from "../pages/ErrorPage";
 import SearchDonors from "../pages/SearchDonors";
 import DonationRequests from "../pages/DonationRequests";
 import Funding from "../pages/FundingPage";
-
-
+import Profile from "../pages/Profile";
 
 import DashboardHome from "../pages/Dashboard/DashboardHome";
-import Profile from "../pages/Dashboard/Profile";
 import MyDonationRequests from "../pages/Dashboard/MyDonationRequests";
 import CreateDonationRequest from "../pages/Dashboard/CreateDonationRequest";
 
@@ -35,14 +32,16 @@ export default createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { path: "/", element: <Home /> },
-      { path: "/search-donors", element: <SearchDonors /> },
+      { path: "/search-donors", element: <SearchDonors />, loader: () => fetch("/serviceCenters.json").then(res => res.json())},
       { path: "/donation-requests", element: <DonationRequests /> },
-      {path: "/funding", element: <Funding /> },
+      { path: "/funding", element: <Funding /> },
+      { path: "profile", element: <Profile />, loader: () => fetch("/serviceCenters.json").then(res => res.json()) },
       { path: "/login", element: <Login /> },
-      { path: "/register", element: <Register /> },
+      { path: "/register", element: <Register />, loader: () => fetch("/serviceCenters.json").then(res => res.json())},
     ],
   },
 
+  // Donor Dashboard
   {
     path: "/dashboard",
     element: <ProtectedRoute allowedRoles={["donor"]} />,
@@ -51,17 +50,15 @@ export default createBrowserRouter([
         element: <DashboardLayout />,
         children: [
           { path: "", element: <DashboardHome /> },
-          { path: "profile", element: <Profile /> },
           { path: "my-donation-requests", element: <MyDonationRequests /> },
-          {
-            path: "create-donation-request",
-            element: <CreateDonationRequest />,
-          },
+          { path: "create-donation-request", element: <CreateDonationRequest />, loader: () => fetch("/serviceCenters.json").then(res => res.json())},
+          { path: "profile", element: <Profile />, loader: () => fetch("/serviceCenters.json").then(res => res.json()) },
         ],
       },
     ],
   },
 
+  // Admin Dashboard
   {
     path: "/admin",
     element: <ProtectedRoute allowedRoles={["admin"]} />,
@@ -71,15 +68,14 @@ export default createBrowserRouter([
         children: [
           { path: "", element: <AdminDashboardHome /> },
           { path: "all-users", element: <AllUsers /> },
-          {
-            path: "all-blood-donation-request",
-            element: <AllDonationRequests />,
-          },
+          { path: "all-blood-donation-request", element: <AllDonationRequests /> },
+          { path: "profile", element: <Profile />, loader: () => fetch("/serviceCenters.json").then(res => res.json()) },
         ],
       },
     ],
   },
 
+  // Volunteer Dashboard
   {
     path: "/volunteer",
     element: <ProtectedRoute allowedRoles={["volunteer"]} />,
@@ -88,10 +84,8 @@ export default createBrowserRouter([
         element: <VolunteerDashboardLayout />,
         children: [
           { path: "", element: <DashboardHomePage /> },
-          {
-            path: "all-blood-donation-request",
-            element: <AllBloodDonationRequestPage />,
-          },
+          { path: "all-blood-donation-request", element: <AllBloodDonationRequestPage /> },
+          { path: "profile", element: <Profile />, loader: () => fetch("/serviceCenters.json").then(res => res.json()) },
         ],
       },
     ],

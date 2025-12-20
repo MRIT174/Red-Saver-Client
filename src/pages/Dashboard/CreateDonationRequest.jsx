@@ -1,90 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../../provider/AuthProvider";
 
-/* ================= DATA ================= */
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
-const divisionsData = {
-  Dhaka: [
-    "Dhaka",
-    "Gazipur",
-    "Narayanganj",
-    "Tangail",
-    "Manikganj",
-    "Munshiganj",
-    "Narsingdi",
-    "Faridpur",
-    "Gopalganj",
-    "Madaripur",
-    "Rajbari",
-    "Shariatpur",
-    "Kishoreganj",
-  ],
-  Chattogram: [
-    "Chattogram",
-    "Cox's Bazar",
-    "Comilla",
-    "Feni",
-    "Noakhali",
-    "Brahmanbaria",
-    "Chandpur",
-    "Lakshmipur",
-    "Rangamati",
-    "Bandarban",
-    "Khagrachhari",
-  ],
-  Rajshahi: [
-    "Rajshahi",
-    "Bogura",
-    "Pabna",
-    "Sirajganj",
-    "Naogaon",
-    "Natore",
-    "Joypurhat",
-    "Chapainawabganj",
-  ],
-  Khulna: [
-    "Khulna",
-    "Jessore",
-    "Satkhira",
-    "Bagerhat",
-    "Jhenaidah",
-    "Magura",
-    "Narail",
-    "Kushtia",
-    "Chuadanga",
-    "Meherpur",
-  ],
-  Barishal: [
-    "Barishal",
-    "Bhola",
-    "Patuakhali",
-    "Pirojpur",
-    "Jhalokathi",
-    "Barguna",
-  ],
-  Sylhet: ["Sylhet", "Moulvibazar", "Habiganj", "Sunamganj"],
-  Rangpur: [
-    "Rangpur",
-    "Dinajpur",
-    "Kurigram",
-    "Gaibandha",
-    "Nilphamari",
-    "Panchagarh",
-    "Thakurgaon",
-    "Lalmonirhat",
-  ],
-  Mymensingh: ["Mymensingh", "Jamalpur", "Netrokona", "Sherpur"],
-};
-
-/* ================= COMPONENT ================= */
 const CreateDonationRequest = () => {
   const { user } = useAuth();
+
+  const [geoData, setGeoData] = useState([]);
+  const [districts, setDistricts] = useState([]);
 
   const [formData, setFormData] = useState({
     recipientName: "",
     bloodGroup: "",
-    division: "",
+    region: "",
     district: "",
     hospital: "",
     address: "",
@@ -97,16 +25,36 @@ const CreateDonationRequest = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  // Load geo data from serviceCenters.json
+  useEffect(() => {
+    fetch("/serviceCenters.json")
+      .then((res) => res.json())
+      .then((data) => setGeoData(data))
+      .catch((err) => console.error("Failed to load geo data", err));
+  }, []);
+
+  // Update districts whenever region changes
+  useEffect(() => {
+    if (!formData.region) {
+      setDistricts([]);
+      setFormData((prev) => ({ ...prev, district: "" }));
+      return;
+    }
+
+    const filteredDistricts = geoData
+      .filter((g) => g.region === formData.region)
+      .map((g) => g.district);
+
+    setDistricts(filteredDistricts);
+    setFormData((prev) => ({ ...prev, district: "" }));
+  }, [formData.region, geoData]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Division change হলে district reset
-    if (name === "division") {
-      setFormData({
-        ...formData,
-        division: value,
-        district: "",
-      });
+    // Reset district if region changes
+    if (name === "region") {
+      setFormData({ ...formData, region: value, district: "" });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -157,7 +105,7 @@ const CreateDonationRequest = () => {
       setFormData({
         recipientName: "",
         bloodGroup: "",
-        division: "",
+        region: "",
         district: "",
         hospital: "",
         address: "",
@@ -207,18 +155,18 @@ const CreateDonationRequest = () => {
           ))}
         </select>
 
-        {/* Division */}
+        {/* Region */}
         <select
-          name="division"
-          value={formData.division}
+          name="region"
+          value={formData.region}
           onChange={handleChange}
           className="select select-bordered w-full"
           required
         >
-          <option value="">Select Division</option>
-          {Object.keys(divisionsData).map((div) => (
-            <option key={div} value={div}>
-              {div}
+          <option value="">Select Region</option>
+          {[...new Set(geoData.map((g) => g.region))].map((region) => (
+            <option key={region} value={region}>
+              {region}
             </option>
           ))}
         </select>
@@ -230,15 +178,14 @@ const CreateDonationRequest = () => {
           onChange={handleChange}
           className="select select-bordered w-full"
           required
-          disabled={!formData.division}
+          disabled={!districts.length}
         >
           <option value="">Select District</option>
-          {formData.division &&
-            divisionsData[formData.division].map((dist) => (
-              <option key={dist} value={dist}>
-                {dist}
-              </option>
-            ))}
+          {districts.map((dist) => (
+            <option key={dist} value={dist}>
+              {dist}
+            </option>
+          ))}
         </select>
 
         <input

@@ -74,7 +74,7 @@ export default function PendingDonationRequests() {
                   {req.bloodGroup || "N/A"}
                 </span>
                 <span className="badge badge-success badge-outline">
-                  {req.division || "N/A"}
+                  {req.region || "N/A"}
                 </span>
                 <span className="badge badge-success badge-outline">
                   {req.district || "N/A"}

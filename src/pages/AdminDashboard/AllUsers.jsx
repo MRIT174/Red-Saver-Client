@@ -35,8 +35,8 @@ const AllUsers = () => {
     try {
       const endpoint =
         user.status === "active"
-          ? `/users/block/${user.email}`
-          : `/users/unblock/${user.email}`;
+          ? `/users/block/${encodeURIComponent(user.email)}`
+          : `/users/unblock/${encodeURIComponent(user.email)}`;
       await api.patch(endpoint);
       fetchUsers();
       showAlert(
@@ -52,12 +52,26 @@ const AllUsers = () => {
 
   const changeRole = async (user, role) => {
     try {
-      await api.patch(`/users/role/${user.email}`, { role });
+      await api.patch(`/users/role/${encodeURIComponent(user.email)}`, { role });
       fetchUsers();
       showAlert(`User "${user.name}" is now ${role}`);
     } catch (err) {
       console.error(err);
       showAlert("Action failed", "error");
+    }
+  };
+
+  const deleteUser = async (user) => {
+    if (!window.confirm(`Are you sure you want to delete "${user.name}"?`))
+      return;
+
+    try {
+      await api.delete(`/users/${encodeURIComponent(user.email)}`);
+      fetchUsers();
+      showAlert(`User "${user.name}" has been deleted`);
+    } catch (err) {
+      console.error("Delete error:", err.response?.status, err.response?.data);
+      showAlert("Delete failed", "error");
     }
   };
 
@@ -121,9 +135,7 @@ const AllUsers = () => {
                     className="w-10 h-10 rounded-full object-cover"
                   />
                 </td>
-                <td className="px-4 py-2 font-medium text-gray-700">
-                  {u.email}
-                </td>
+                <td className="px-4 py-2 font-medium text-gray-700">{u.email}</td>
                 <td className="px-4 py-2 text-gray-600">{u.name}</td>
                 <td className="px-4 py-2">
                   <span
@@ -194,6 +206,13 @@ const AllUsers = () => {
                           Make Admin
                         </button>
                       )}
+
+                      <button
+                        onClick={() => deleteUser(u)}
+                        className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                      >
+                        Delete User
+                      </button>
                     </div>
                   )}
                 </td>

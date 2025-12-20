@@ -137,7 +137,7 @@ const MyDonationRequests = () => {
 
                 <p className="text-sm text-gray-600">
                   <strong>Location:</strong> {donation.district},{" "}
-                  {donation.division}
+                  {donation.region}
                 </p>
 
                 <p className="text-sm text-gray-600">

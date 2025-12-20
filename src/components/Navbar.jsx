@@ -5,7 +5,7 @@ import axios from "axios";
 import { signOut as firebaseSignOut } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 
-/* ✅ axios baseURL (VERY IMPORTANT) */
+/* ✅ axios baseURL */
 axios.defaults.baseURL = "https://red-saver-server.vercel.app";
 
 const Navbar = () => {
@@ -43,7 +43,7 @@ const Navbar = () => {
     }
   };
 
-  /* 🔹 Dashboard path */
+  /* 🔹 Determine dashboard path based on role */
   const dashboardPath =
     dbUser?.role === "admin"
       ? "/admin"
@@ -51,13 +51,22 @@ const Navbar = () => {
       ? "/volunteer"
       : "/dashboard";
 
-  /* 🔹 Avatar priority logic */
+  /* 🔹 Avatar logic */
   const avatarUrl =
     dbUser?.avatar ||
     user?.photoURL ||
     `https://ui-avatars.com/api/?name=${encodeURIComponent(
       dbUser?.name || user?.displayName || "User"
     )}&background=dc2626&color=fff`;
+
+  /* 🔹 Loader if dbUser is not yet fetched */
+  if (user && !dbUser) {
+    return (
+      <nav className="bg-white shadow-md sticky top-0 z-50 p-4">
+        <p>Loading user...</p>
+      </nav>
+    );
+  }
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
@@ -70,16 +79,36 @@ const Navbar = () => {
 
           {/* DESKTOP MENU */}
           <div className="hidden md:flex gap-6 items-center">
-            <NavLink className="px-2 py-1 hover:text-red-600" to="/">
+            <NavLink
+              className={({ isActive }) =>
+                `px-2 py-1 hover:text-red-600 ${isActive ? "text-red-600 font-semibold" : ""}`
+              }
+              to="/"
+            >
               Home
             </NavLink>
-            <NavLink className="px-2 py-1 hover:text-red-600" to="/search-donors">
+            <NavLink
+              className={({ isActive }) =>
+                `px-2 py-1 hover:text-red-600 ${isActive ? "text-red-600 font-semibold" : ""}`
+              }
+              to="/search-donors"
+            >
               Search Donors
             </NavLink>
-            <NavLink className="px-2 py-1 hover:text-red-600" to="/donation-requests">
+            <NavLink
+              className={({ isActive }) =>
+                `px-2 py-1 hover:text-red-600 ${isActive ? "text-red-600 font-semibold" : ""}`
+              }
+              to="/donation-requests"
+            >
               Donation Requests
             </NavLink>
-            <NavLink className="px-2 py-1 hover:text-red-600" to="/funding">
+            <NavLink
+              className={({ isActive }) =>
+                `px-2 py-1 hover:text-red-600 ${isActive ? "text-red-600 font-semibold" : ""}`
+              }
+              to="/funding"
+            >
               Funding
             </NavLink>
           </div>
@@ -147,10 +176,7 @@ const Navbar = () => {
           </div>
 
           {/* MOBILE MENU BUTTON */}
-          <button
-            onClick={() => setOpen(!open)}
-            className="md:hidden p-2"
-          >
+          <button onClick={() => setOpen(!open)} className="md:hidden p-2">
             ☰
           </button>
         </div>
