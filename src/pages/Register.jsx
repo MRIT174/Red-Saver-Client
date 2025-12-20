@@ -7,7 +7,6 @@ import api from "../api/apiClient";
 export default function Register() {
   const navigate = useNavigate();
 
-  // Load service centers from loader
   const serviceCenters = useLoaderData();
 
   const [form, setForm] = useState({
@@ -22,12 +21,10 @@ export default function Register() {
 
   const [filteredDistricts, setFilteredDistricts] = useState([]);
 
-  // Get unique divisions (regions)
   const divisions = useMemo(() => {
     return [...new Set(serviceCenters.map((s) => s.region))];
   }, [serviceCenters]);
 
-  // Update filtered districts when division changes
   useEffect(() => {
     if (!form.division) {
       setFilteredDistricts([]);
@@ -59,7 +56,6 @@ export default function Register() {
       const token = await cred.user.getIdToken();
       localStorage.setItem("redsaver_token", token);
 
-      // Save to backend
       await api.post("/users", {
         name,
         email,
@@ -122,7 +118,6 @@ export default function Register() {
           ))}
         </select>
 
-        {/* Divisions */}
         <select
           className="select select-bordered w-full mb-2"
           value={form.division}
@@ -137,7 +132,6 @@ export default function Register() {
           ))}
         </select>
 
-        {/* Districts */}
         <select
           className="select select-bordered w-full mb-2"
           value={form.district}

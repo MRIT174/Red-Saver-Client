@@ -18,7 +18,7 @@ const DashboardHomePage = () => {
   return (
     <div>
       <h1 className="text-3xl font-bold mb-6">
-        Welcome Back, <span className="text-red-500">Volunteer</span> 👋
+        Welcome Back, <span className="text-red-500">Volunteer</span> 
       </h1>
 
       <div className="grid md:grid-cols-2 gap-6">

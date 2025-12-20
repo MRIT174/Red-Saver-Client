@@ -3,7 +3,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 import { useNavigate } from "react-router";
 import { useAuth } from "../provider/AuthProvider";
-import api from "../api/apiClient"; // ✅ IMPORTANT
+import api from "../api/apiClient";
 
 export default function Login() {
   const { user } = useAuth();
@@ -30,14 +30,12 @@ export default function Login() {
       const token = await cred.user.getIdToken();
       localStorage.setItem("redsaver_token", token);
 
-      // 🔹 Save / update user in DB
       await api.post("/users", {
         email: cred.user.email,
         name: cred.user.displayName || "",
         avatar: cred.user.photoURL || "",
       });
 
-      // 🔹 Get role
       const res = await api.get(`/users/${cred.user.email}`);
       const dbUser = res.data;
 

@@ -25,7 +25,6 @@ const CreateDonationRequest = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // Load geo data from serviceCenters.json
   useEffect(() => {
     fetch("/serviceCenters.json")
       .then((res) => res.json())
@@ -33,7 +32,6 @@ const CreateDonationRequest = () => {
       .catch((err) => console.error("Failed to load geo data", err));
   }, []);
 
-  // Update districts whenever region changes
   useEffect(() => {
     if (!formData.region) {
       setDistricts([]);
@@ -52,7 +50,6 @@ const CreateDonationRequest = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Reset district if region changes
     if (name === "region") {
       setFormData({ ...formData, region: value, district: "" });
     } else {

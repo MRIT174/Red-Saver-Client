@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import app from "../firebaseConfig";
-import api from "../api/apiClient"; // ✅ FIX
+import api from "../api/apiClient";
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);

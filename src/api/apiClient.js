@@ -5,7 +5,6 @@ const api = axios.create({
   baseURL: "https://red-saver-server.vercel.app",
 });
 
-/* ---------- REQUEST ---------- */
 api.interceptors.request.use(async (config) => {
   let token = null;
 
@@ -22,7 +21,6 @@ api.interceptors.request.use(async (config) => {
   return config;
 });
 
-/* ---------- RESPONSE ---------- */
 api.interceptors.response.use(
   (res) => res,
   (err) => {

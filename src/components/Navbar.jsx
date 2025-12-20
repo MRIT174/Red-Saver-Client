@@ -5,7 +5,6 @@ import axios from "axios";
 import { signOut as firebaseSignOut } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 
-/* ✅ axios baseURL */
 axios.defaults.baseURL = "https://red-saver-server.vercel.app";
 
 const Navbar = () => {
@@ -14,7 +13,6 @@ const Navbar = () => {
   const { user } = useAuth();
   const [dbUser, setDbUser] = useState(null);
 
-  /* 🔹 Fetch user from DB */
   useEffect(() => {
     const fetchUser = async () => {
       if (!user?.email) return;
@@ -31,7 +29,7 @@ const Navbar = () => {
     fetchUser();
   }, [user]);
 
-  /* 🔹 Logout */
+
   const handleLogout = async () => {
     try {
       await firebaseSignOut(auth);
@@ -43,7 +41,6 @@ const Navbar = () => {
     }
   };
 
-  /* 🔹 Determine dashboard path based on role */
   const dashboardPath =
     dbUser?.role === "admin"
       ? "/admin"
@@ -51,7 +48,6 @@ const Navbar = () => {
       ? "/volunteer"
       : "/dashboard";
 
-  /* 🔹 Avatar logic */
   const avatarUrl =
     dbUser?.avatar ||
     user?.photoURL ||
@@ -59,7 +55,6 @@ const Navbar = () => {
       dbUser?.name || user?.displayName || "User"
     )}&background=dc2626&color=fff`;
 
-  /* 🔹 Loader if dbUser is not yet fetched */
   if (user && !dbUser) {
     return (
       <nav className="bg-white shadow-md sticky top-0 z-50 p-4">
@@ -72,12 +67,10 @@ const Navbar = () => {
     <nav className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between h-16 items-center">
-          {/* LOGO */}
           <Link to="/" className="text-2xl font-bold text-red-600">
             RedSaver
           </Link>
 
-          {/* DESKTOP MENU */}
           <div className="hidden md:flex gap-6 items-center">
             <NavLink
               className={({ isActive }) =>
@@ -113,7 +106,6 @@ const Navbar = () => {
             </NavLink>
           </div>
 
-          {/* USER AREA */}
           <div className="hidden md:flex items-center gap-4">
             {!user ? (
               <>
@@ -175,14 +167,12 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* MOBILE MENU BUTTON */}
           <button onClick={() => setOpen(!open)} className="md:hidden p-2">
             ☰
           </button>
         </div>
       </div>
 
-      {/* MOBILE MENU */}
       {open && (
         <div className="md:hidden bg-white border-t shadow-sm">
           <div className="flex flex-col px-4 py-3 space-y-2">

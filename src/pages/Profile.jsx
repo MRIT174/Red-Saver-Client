@@ -124,7 +124,6 @@ const Profile = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-linear-to-b from-red-50 to-white p-6">
       <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8">
-        {/* Avatar */}
         <div className="flex flex-col items-center mb-6">
           <div className="w-32 h-32 rounded-full overflow-hidden ring-4 ring-red-400 mb-4">
             <img
@@ -140,7 +139,6 @@ const Profile = () => {
           <p className="text-gray-500">{user.email}</p>
         </div>
 
-        {/* Profile Info */}
         <div className="space-y-3 mb-6">
           <div className="flex justify-between border-b pb-2">
             <span className="font-semibold text-gray-500">Region</span>
@@ -167,7 +165,6 @@ const Profile = () => {
           Edit Profile
         </button>
 
-        {/* Edit Modal */}
         {isEditing && (
           <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
             <div className="bg-white rounded-3xl w-full max-w-md p-6 shadow-2xl">

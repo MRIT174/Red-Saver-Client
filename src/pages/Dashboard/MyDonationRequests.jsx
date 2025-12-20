@@ -82,7 +82,6 @@ const MyDonationRequests = () => {
         My Donation Requests
       </h1>
 
-      {/* Filter */}
       <div className="flex flex-col md:flex-row justify-between gap-4 mb-6">
         <div className="flex items-center gap-2">
           <label className="font-medium">Status:</label>
@@ -107,7 +106,6 @@ const MyDonationRequests = () => {
         </p>
       </div>
 
-      {/* Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {paginatedDonations.map((donation) => {
           const status = donation.status || "pending";
@@ -169,7 +167,6 @@ const MyDonationRequests = () => {
         })}
       </div>
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex justify-center gap-2 mt-6">
           {Array.from({ length: totalPages }, (_, i) => (

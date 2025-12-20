@@ -11,14 +11,12 @@ export default function PendingDonationRequests() {
       const token = localStorage.getItem("redsaver_token");
       if (!token) throw new Error("Token not found");
 
-      // Server থেকে সব donations fetch
       const res = await api.get("/donations", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       const allDonations = Array.isArray(res.data) ? res.data : [];
 
-      // Filter only pending
       const pendingRequests = allDonations.filter(
         (d) => d.status === "pending"
       );

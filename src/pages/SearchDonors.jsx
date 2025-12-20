@@ -16,7 +16,6 @@ const SearchDonors = () => {
   const [donors, setDonors] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Load regions & districts
   useEffect(() => {
     fetch("/serviceCenters.json")
       .then((res) => res.json())
@@ -35,7 +34,6 @@ const SearchDonors = () => {
       .catch((err) => console.error("Failed to load geo data", err));
   }, []);
 
-  // Update districts when region changes
   useEffect(() => {
     if (!formData.region) {
       setFilteredDistricts([]);
@@ -49,7 +47,6 @@ const SearchDonors = () => {
     setFormData((prev) => ({ ...prev, district: "" }));
   }, [formData.region, districtsData]);
 
-  // Search handler
   const handleSearch = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -84,7 +81,6 @@ const SearchDonors = () => {
 
       const data = await res.json();
 
-      // Frontend filtering (case-insensitive) for extra safety
       const filtered = data.filter((d) => {
         return (
           (!formData.bloodGroup ||
@@ -118,7 +114,7 @@ const SearchDonors = () => {
         className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"
         onSubmit={handleSearch}
       >
-        {/* Blood Group */}
+
         <select
           className="select select-bordered w-full"
           value={formData.bloodGroup}
@@ -134,7 +130,6 @@ const SearchDonors = () => {
           ))}
         </select>
 
-        {/* Region */}
         <select
           className="select select-bordered w-full"
           value={formData.region}
@@ -150,7 +145,7 @@ const SearchDonors = () => {
           ))}
         </select>
 
-        {/* District */}
+
         <select
           className="select select-bordered w-full"
           value={formData.district}

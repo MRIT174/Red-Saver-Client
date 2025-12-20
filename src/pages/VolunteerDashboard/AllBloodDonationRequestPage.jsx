@@ -7,7 +7,6 @@ const AllBloodDonationRequestPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // 🔹 Fetch all donation requests
   useEffect(() => {
     const fetchRequests = async () => {
       try {
@@ -27,13 +26,11 @@ const AllBloodDonationRequestPage = () => {
     fetchRequests();
   }, []);
 
-  // 🔹 Filter by status
   const filteredRequests =
     filter === "all"
       ? requests
       : requests.filter((r) => r.status === filter);
 
-  // 🔹 Update donation status
   const updateStatus = async (id, newStatus) => {
     try {
       await api.patch(`/donations/${id}`, { status: newStatus });
@@ -51,7 +48,6 @@ const AllBloodDonationRequestPage = () => {
     }
   };
 
-  // 🔹 Loading
   if (loading) {
     return (
       <p className="p-6 text-center text-gray-500">
@@ -60,7 +56,6 @@ const AllBloodDonationRequestPage = () => {
     );
   }
 
-  // 🔹 Error
   if (error) {
     return (
       <p className="p-6 text-center text-red-500">
@@ -75,7 +70,6 @@ const AllBloodDonationRequestPage = () => {
         All Blood Donation Requests
       </h1>
 
-      {/* 🔹 Filter */}
       <div className="mb-4">
         <select
           className="select select-bordered w-52"
@@ -88,7 +82,6 @@ const AllBloodDonationRequestPage = () => {
         </select>
       </div>
 
-      {/* 🔹 Table */}
       {filteredRequests.length === 0 ? (
         <p className="text-gray-500 text-center">
           No donation requests found
@@ -109,27 +102,25 @@ const AllBloodDonationRequestPage = () => {
             <tbody>
               {filteredRequests.map((req) => (
                 <tr key={req._id}>
-                  {/* 🔹 TITLE */}
                   <td>
                     <div className="font-semibold">
                       {req.recipientName}
                     </div>
                     <div className="text-xs text-gray-500">
-                      🏥 {req.hospital}
+                       {req.hospital}
                     </div>
                     <div className="text-xs text-gray-400">
-                      📍 {req.district}, {req.region}
+                       {req.district}, {req.region}
                     </div>
                   </td>
 
-                  {/* 🔹 BLOOD GROUP */}
+
                   <td>
                     <span className="badge badge-outline">
                       {req.bloodGroup}
                     </span>
                   </td>
 
-                  {/* 🔹 DESCRIPTION */}
                   <td>
                     <p className="text-sm">
                       {req.message || "No message provided"}
@@ -143,7 +134,6 @@ const AllBloodDonationRequestPage = () => {
                     </p>
                   </td>
 
-                  {/* 🔹 STATUS */}
                   <td>
                     <span
                       className={`badge ${
@@ -156,7 +146,6 @@ const AllBloodDonationRequestPage = () => {
                     </span>
                   </td>
 
-                  {/* 🔹 ACTION */}
                   <td>
                     {req.status !== "completed" && (
                       <button
