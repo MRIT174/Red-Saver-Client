@@ -1,19 +1,27 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
 import { RouterProvider } from "react-router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
+import AuthProvider from "./provider/AuthProvider";
 import router from "./Routes/Router";
-import AuthProvider from "./provider/AuthProvider.jsx";
+import "./index.css";
 
-import AOS from "aos";
-import "aos/dist/aos.css";
+// React Query client
+const queryClient = new QueryClient();
 
-AOS.init();
+// Stripe publishable key
+const stripePromise = loadStripe(
+  import.meta.env.VITE_STRIPE_PUBLIC_KEY
+);
 
 createRoot(document.getElementById("root")).render(
-  // <StrictMode>
-        <AuthProvider>
-      <RouterProvider router={router} />
-        </AuthProvider>
-  // </StrictMode>
+  <AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <Elements stripe={stripePromise}>
+        <RouterProvider router={router} />
+      </Elements>
+    </QueryClientProvider>
+  </AuthProvider>
 );

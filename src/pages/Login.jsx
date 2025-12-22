@@ -4,6 +4,7 @@ import { auth } from "../firebaseConfig";
 import { useNavigate } from "react-router";
 import { useAuth } from "../provider/AuthProvider";
 import api from "../api/apiClient";
+import Swal from "sweetalert2"; // <-- import SweetAlert2
 
 export default function Login() {
   const { user } = useAuth();
@@ -45,7 +46,15 @@ export default function Login() {
 
     } catch (err) {
       console.error(err);
-      alert(err.message || "Login failed");
+
+      // SweetAlert2 for login errors
+      Swal.fire({
+        icon: "error",
+        title: "Login Failed",
+        text: err.message || "Incorrect email or password",
+        confirmButtonText: "Ok",
+        timer: 3000,
+      });
     } finally {
       setLoading(false);
     }

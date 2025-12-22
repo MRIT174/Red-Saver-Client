@@ -9,35 +9,33 @@ const FundingPage = () => {
   useEffect(() => {
     if (!user) return;
 
-    const token = localStorage.getItem("token");
-    fetch("https://red-saver-server.vercel.app//funds", {
+    const token = localStorage.getItem("redsaver_token");
+
+    fetch("https://red-saver-server.vercel.app/funds", {
+      method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
     })
       .then((res) => {
-        if (!res.ok) throw new Error("Unauthorized or failed to fetch");
+        if (!res.ok) throw new Error("Failed to fetch funds");
         return res.json();
       })
       .then((data) => setFunds(Array.isArray(data) ? data : []))
-      .catch((err) => console.error(err))
+      .catch((err) => console.error("Fetch error:", err))
       .finally(() => setLoading(false));
   }, [user]);
 
   if (!user) {
-    return (
-      <p className="text-center mt-20">Please login to view funding history.</p>
-    );
+    return <p className="text-center mt-20">Please login to view funding history.</p>;
   }
 
   return (
     <div className="max-w-5xl mx-auto p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Funding History</h2>
-
-        <a href="/give-fund" className="btn btn-primary">
-          Give Fund
-        </a>
+        <a href="/give-fund" className="btn btn-primary">Give Fund</a>
       </div>
 
       {loading ? (
@@ -54,7 +52,7 @@ const FundingPage = () => {
               </tr>
             </thead>
             <tbody>
-              {Array.isArray(funds) && funds.length > 0 ? (
+              {funds.length ? (
                 funds.map((fund, index) => (
                   <tr key={fund._id}>
                     <td>{index + 1}</td>
@@ -65,9 +63,7 @@ const FundingPage = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={4} className="text-center">
-                    No funds found
-                  </td>
+                  <td colSpan={4} className="text-center">No funds found</td>
                 </tr>
               )}
             </tbody>

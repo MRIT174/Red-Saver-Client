@@ -13,6 +13,7 @@ import SearchDonors from "../pages/SearchDonors";
 import DonationRequests from "../pages/DonationRequests";
 import Funding from "../pages/FundingPage";
 import Profile from "../pages/Profile";
+import GiveFund from "../pages/GiveFund";
 
 import DashboardHome from "../pages/Dashboard/DashboardHome";
 import MyDonationRequests from "../pages/Dashboard/MyDonationRequests";
@@ -38,6 +39,8 @@ export default createBrowserRouter([
       { path: "profile", element: <Profile />, loader: () => fetch("/serviceCenters.json").then(res => res.json()) },
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register />, loader: () => fetch("/serviceCenters.json").then(res => res.json())},
+      { path: "/give-fund", element: <GiveFund /> },
+
     ],
   },
 

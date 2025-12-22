@@ -1,137 +1,99 @@
-import React, { useState, useEffect } from "react";
-import { useAuth } from "../provider/AuthProvider";
-import {
-  Elements,
-  PaymentElement,
-  useStripe,
-  useElements,
-} from "@stripe/react-stripe-js";
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import Swal from "sweetalert2";
+import axiosSecure from "../api/axiosSecure";
+import { useState } from "react";
 
-import { loadStripe } from "@stripe/stripe-js";
-
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_TEST);
-
-const CheckoutForm = ({ amount }) => {
-  const { user } = useAuth();
+const GiveFund = () => {
   const stripe = useStripe();
   const elements = useElements();
-
-  const [clientSecret, setClientSecret] = useState("");
+  const [amount, setAmount] = useState(10); // default $10
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
-    fetch("https://red-saver-server.vercel.app//create-payment-intent", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ amount }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.clientSecret) setClientSecret(data.clientSecret);
-      })
-      .catch((err) => {
-        console.error(err);
-        setErrorMessage("Failed to initiate payment");
-      });
-  }, [amount]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handlePay = async () => {
     if (!stripe || !elements) return;
 
     setLoading(true);
-    setErrorMessage("");
 
     try {
-      const { error, paymentIntent } = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url: window.location.href,
-        },
-        redirect: "if_required",
+      // amount → cents
+      const { data } = await axiosSecure.post("/create-payment-intent", {
+        amount: amount * 100,
       });
 
-      if (error) {
-        setErrorMessage(error.message);
-      } else if (paymentIntent?.status === "succeeded") {
-        const token = localStorage.getItem("token");
-        await fetch("https://red-saver-server.vercel.app//funds", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            amount,
-            donorName: user.displayName,
-            donorEmail: user.email,
-          }),
+      const card = elements.getElement(CardElement);
+
+      const result = await stripe.confirmCardPayment(data.clientSecret, {
+        payment_method: { card },
+      });
+
+      if (result.error) {
+        Swal.fire({
+          icon: "error",
+          title: "Payment Failed",
+          text: result.error.message,
+        });
+        setLoading(false);
+        return;
+      }
+
+      if (result.paymentIntent.status === "succeeded") {
+        // 🔥 Save fund to DB
+        await axiosSecure.post("/funds", {
+          amount: amount,
+          paymentIntentId: result.paymentIntent.id,
+          donorName: "Test Donor", // চাইলে auth থেকে username নিতে পারো
         });
 
-        setSuccess(true);
+        Swal.fire({
+          icon: "success",
+          title: "Payment Successful 🎉",
+          html: `<b>Amount:</b> $${amount}`,
+          confirmButtonColor: "#16a34a",
+        });
       }
     } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Something went wrong",
+        text: "Please try again",
+      });
       console.error(err);
-      setErrorMessage("Payment failed. Try again.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
-  if (!clientSecret) return <p>Loading payment form...</p>;
-
-  if (success)
-    return (
-      <p className="text-green-600 text-lg">
-        Payment successful! Thank you for your contribution.
-      </p>
-    );
-
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="max-w-md mx-auto p-6 bg-white shadow rounded"
-    >
-      <h2 className="text-xl font-bold mb-4">Give Fund - ৳{amount}</h2>
-      <PaymentElement />
-      {errorMessage && <p className="text-red-600 mt-2">{errorMessage}</p>}
-      <button
-        type="submit"
-        className="btn btn-primary w-full mt-4"
-        disabled={loading || !stripe}
-      >
-        {loading ? "Processing..." : `Pay ৳${amount}`}
-      </button>
-    </form>
-  );
-};
+    <div className="max-w-md mx-auto mt-10 bg-white p-6 rounded shadow">
+      <h2 className="text-xl font-bold mb-4 text-center">
+        Give Fund
+      </h2>
 
-const GiveFund = () => {
-  const [amount, setAmount] = useState(500);
+      {/* Amount input */}
+      <label className="block mb-2 font-medium">
+        Amount ($)
+      </label>
+      <input
+        type="number"
+        min="1"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+        className="input input-bordered w-full mb-4"
+      />
 
-  return (
-    <Elements stripe={stripePromise}>
-      <div className="max-w-md mx-auto mt-20 p-6 bg-gray-100 rounded shadow">
-        <label className="block mb-4">
-          Amount (BDT)
-          <input
-            type="number"
-            className="input input-bordered w-full mt-1"
-            value={amount}
-            onChange={(e) => setAmount(Math.max(1, parseInt(e.target.value)))}
-          />
-        </label>
-        <CheckoutForm amount={amount} />
+      {/* Card input */}
+      <div className="border p-3 rounded mb-4">
+        <CardElement />
       </div>
-    </Elements>
+
+      <button
+        onClick={handlePay}
+        disabled={loading}
+        className="btn btn-primary w-full"
+      >
+        {loading ? "Processing..." : "Pay Now"}
+      </button>
+    </div>
   );
 };
 
