@@ -1,0 +1,106 @@
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../../Hook/useAuth";
+import api from "../../api/axios";
+import { FaUsers, FaDonate, FaTint } from "react-icons/fa";
+
+const AdminDashboardHome = () => {
+  const { user, loading } = useAuth();
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    totalFunds: 0,
+    totalDonations: 0,
+  });
+  const [loadingStats, setLoadingStats] = useState(true);
+
+  const fetchStats = async () => {
+    setLoadingStats(true);
+    try {
+      const usersRes = await api.get("/users");
+      const totalUsers = usersRes.data.length;
+
+      const donationsRes = await api.get("/donations");
+      const totalFunds = donationsRes.data.reduce(
+        (acc, d) => acc + (d.amount || 0),
+        0
+      );
+
+      const totalDonations = donationsRes.data.length;
+
+      setStats({ totalUsers, totalFunds, totalDonations });
+    } catch (err) {
+      console.error("Error fetching stats", err);
+    } finally {
+      setLoadingStats(false);
+    }
+  };
+
+  useEffect(() => {
+    if (user) fetchStats();
+  }, [user]);
+
+  if (loading)
+    return <p className="p-6 text-center text-gray-400">Loading...</p>;
+
+  if (!user)
+    return (
+      <p className="p-6 text-center text-red-500 font-medium">
+        Please login to view the dashboard
+      </p>
+    );
+
+  return (
+    <div className="p-6 min-h-screen bg-gray-900">
+      <h1 className="text-3xl font-bold text-white mb-2">
+        Welcome, <span className="text-red-500">{user.email}</span>
+      </h1>
+      <p className="mb-8 text-gray-400">
+        This is your Admin Dashboard Home
+      </p>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Total Users */}
+        <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 flex items-center gap-4 shadow hover:shadow-lg transition">
+          <div className="bg-red-500/20 text-red-400 p-3 rounded-full">
+            <FaUsers size={24} />
+          </div>
+          <div>
+            <p className="text-2xl font-bold text-white">
+              {loadingStats ? "..." : stats.totalUsers}
+            </p>
+            <p className="text-gray-400">Total Users</p>
+          </div>
+        </div>
+
+        {/* Total Funds */}
+        <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 flex items-center gap-4 shadow hover:shadow-lg transition">
+          <div className="bg-red-500/20 text-red-400 p-3 rounded-full">
+            <FaDonate size={24} />
+          </div>
+          <div>
+            <p className="text-2xl font-bold text-white">
+              {loadingStats ? "..." : `$${stats.totalFunds}`}
+            </p>
+            <p className="text-gray-400">Total Funds</p>
+          </div>
+        </div>
+
+        {/* Blood Donations */}
+        <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 flex items-center gap-4 shadow hover:shadow-lg transition">
+          <div className="bg-red-500/20 text-red-400 p-3 rounded-full">
+            <FaTint size={24} />
+          </div>
+          <div>
+            <p className="text-2xl font-bold text-white">
+              {loadingStats ? "..." : stats.totalDonations}
+            </p>
+            <p className="text-gray-400">
+              Blood Donation Requests
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AdminDashboardHome;
