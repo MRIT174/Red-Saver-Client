@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import api from "../../api/axios";
+<<<<<<< HEAD
 import { User, Droplet, MapPin, ClipboardCheck } from "lucide-react";
 import { motion } from "framer-motion";
+=======
+>>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
 
 const AllBloodDonationRequestPage = () => {
   const [requests, setRequests] = useState([]);
@@ -52,7 +55,11 @@ const AllBloodDonationRequestPage = () => {
 
   if (loading) {
     return (
+<<<<<<< HEAD
       <p className="p-6 text-center text-gray-400 animate-pulse">
+=======
+      <p className="p-6 text-center text-gray-500">
+>>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
         Loading donation requests...
       </p>
     );
@@ -60,11 +67,18 @@ const AllBloodDonationRequestPage = () => {
 
   if (error) {
     return (
+<<<<<<< HEAD
       <p className="p-6 text-center text-red-500">{error}</p>
+=======
+      <p className="p-6 text-center text-red-500">
+        {error}
+      </p>
+>>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
     );
   }
 
   return (
+<<<<<<< HEAD
     <motion.div
       className="p-6 max-w-7xl mx-auto bg-gray-900 min-h-screen text-gray-200"
       initial={{ opacity: 0 }}
@@ -84,6 +98,16 @@ const AllBloodDonationRequestPage = () => {
         <Droplet size={20} className="text-red-500" />
         <select
           className="select select-bordered w-52 bg-gray-700 text-gray-200 border-gray-600"
+=======
+    <div className="p-6 max-w-7xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">
+        All Blood Donation Requests
+      </h1>
+
+      <div className="mb-4">
+        <select
+          className="select select-bordered w-52"
+>>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
         >
@@ -94,6 +118,7 @@ const AllBloodDonationRequestPage = () => {
       </div>
 
       {filteredRequests.length === 0 ? (
+<<<<<<< HEAD
         <motion.p
           className="text-gray-400 text-center mt-10"
           initial={{ opacity: 0 }}
@@ -105,6 +130,15 @@ const AllBloodDonationRequestPage = () => {
         <div className="overflow-x-auto">
           <table className="table w-full table-zebra text-gray-200 border-gray-700">
             <thead className="bg-gray-800 text-gray-400">
+=======
+        <p className="text-gray-500 text-center">
+          No donation requests found
+        </p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="table table-zebra w-full">
+            <thead>
+>>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
               <tr>
                 <th>Title</th>
                 <th>Blood Group</th>
@@ -116,6 +150,7 @@ const AllBloodDonationRequestPage = () => {
 
             <tbody>
               {filteredRequests.map((req) => (
+<<<<<<< HEAD
                 <motion.tr
                   key={req._id}
                   initial={{ opacity: 0, y: 10 }}
@@ -136,15 +171,45 @@ const AllBloodDonationRequestPage = () => {
 
                   <td>
                     <span className="badge badge-outline border-gray-500 text-gray-200">
+=======
+                <tr key={req._id}>
+                  <td>
+                    <div className="font-semibold">
+                      {req.recipientName}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                       {req.hospital}
+                    </div>
+                    <div className="text-xs text-gray-400">
+                       {req.district}, {req.region}
+                    </div>
+                  </td>
+
+
+                  <td>
+                    <span className="badge badge-outline">
+>>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
                       {req.bloodGroup}
                     </span>
                   </td>
 
                   <td>
+<<<<<<< HEAD
                     <p className="text-sm">{req.message || "No message provided"}</p>
                     <p className="text-xs text-gray-500">Address: {req.address}</p>
                     <p className="text-xs text-gray-500">
                       Date: {req.donationDate} | Time: {req.donationTime}
+=======
+                    <p className="text-sm">
+                      {req.message || "No message provided"}
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      Address: {req.address}
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      Date: {req.donationDate} | Time:{" "}
+                      {req.donationTime}
+>>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
                     </p>
                   </td>
 
@@ -162,6 +227,7 @@ const AllBloodDonationRequestPage = () => {
 
                   <td>
                     {req.status !== "completed" && (
+<<<<<<< HEAD
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
@@ -173,12 +239,29 @@ const AllBloodDonationRequestPage = () => {
                     )}
                   </td>
                 </motion.tr>
+=======
+                      <button
+                        className="btn btn-xs btn-success"
+                        onClick={() =>
+                          updateStatus(req._id, "completed")
+                        }
+                      >
+                        Mark Completed
+                      </button>
+                    )}
+                  </td>
+                </tr>
+>>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
               ))}
             </tbody>
           </table>
         </div>
       )}
+<<<<<<< HEAD
     </motion.div>
+=======
+    </div>
+>>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
   );
 };
 

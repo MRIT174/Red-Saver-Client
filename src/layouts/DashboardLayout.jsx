@@ -24,7 +24,11 @@ export default function DashboardLayout() {
               Donor User Dashboard
             </h1>
           </div>
+<<<<<<< HEAD
           <NavLink to="/" className="btn btn-sm md:btn-md border-red-500 text-red-400 hover:bg-red-500 hover:text-white transition-all duration-300">
+=======
+          <NavLink to="/" className="btn btn-outline btn-md md:btn-lg">
+>>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
             Home
           </NavLink>
         </div>

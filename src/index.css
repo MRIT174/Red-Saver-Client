@@ -1,12 +1,22 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
+<<<<<<< HEAD
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+=======
+@import "tailwindcss";
+@import "aos/dist/aos.css";
+@plugin "daisyui" {
+  themes: light --default;
+}
+
+>>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
 
 * {
   font-family: "Poppins", sans-serif;
 }
+<<<<<<< HEAD
 
 /* Active link style for Red Saver theme */
 a.active {
@@ -15,4 +25,8 @@ a.active {
 
 a.active:hover {
   @apply bg-slate-950;
+=======
+a.active {
+  @apply bg-base-300;
+>>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
 }
