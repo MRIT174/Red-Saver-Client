@@ -16,10 +16,7 @@ const SearchDonors = () => {
   const [donors, setDonors] = useState([]);
   const [loading, setLoading] = useState(false);
 
-<<<<<<< HEAD
   // Load geo data (regions/districts)
-=======
->>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
   useEffect(() => {
     fetch("/serviceCenters.json")
       .then((res) => res.json())
@@ -38,31 +35,19 @@ const SearchDonors = () => {
       .catch((err) => console.error("Failed to load geo data", err));
   }, []);
 
-<<<<<<< HEAD
   // Filter districts by selected region
-=======
->>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
   useEffect(() => {
     if (!formData.region) {
       setFilteredDistricts([]);
       setFormData((prev) => ({ ...prev, district: "" }));
       return;
     }
-<<<<<<< HEAD
     const filtered = districtsData.filter((d) => d.region === formData.region);
-=======
-    const filtered = districtsData.filter(
-      (d) => d.region === formData.region
-    );
->>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
     setFilteredDistricts(filtered);
     setFormData((prev) => ({ ...prev, district: "" }));
   }, [formData.region, districtsData]);
 
-<<<<<<< HEAD
   // Handle search form submit
-=======
->>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
   const handleSearch = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -81,19 +66,12 @@ const SearchDonors = () => {
       if (formData.district) queryObj.district = formData.district;
 
       const query = new URLSearchParams(queryObj).toString();
-<<<<<<< HEAD
 
       // Safe base URL (fallback to live server)
       const baseUrl =
         import.meta.env.VITE_API_BASE_URL || "https://red-saver-server.vercel.app";
 
       const url = `${baseUrl.replace(/\/$/, "")}/donations?${query}`;
-=======
-      const url = `${import.meta.env.VITE_API_BASE_URL.replace(
-        /\/$/,
-        ""
-      )}/donations?${query}`;
->>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
 
       const res = await fetch(url, {
         headers: {
@@ -106,10 +84,7 @@ const SearchDonors = () => {
 
       const data = await res.json();
 
-<<<<<<< HEAD
       // Filter the results locally for extra safety
-=======
->>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
       const filtered = data.filter((d) => {
         return (
           (!formData.bloodGroup ||
@@ -134,11 +109,7 @@ const SearchDonors = () => {
   };
 
   return (
-<<<<<<< HEAD
     <div className="container mx-auto px-4 py-12 max-w-7xl mx-auto">
-=======
-    <div className="container mx-auto px-4 py-12">
->>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
       <h1 className="text-3xl font-bold text-center mb-8 text-red-500">
         Search Donors
       </h1>
@@ -147,11 +118,7 @@ const SearchDonors = () => {
         className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"
         onSubmit={handleSearch}
       >
-<<<<<<< HEAD
         {/* Blood Group */}
-=======
-
->>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
         <select
           className="select select-bordered w-full"
           value={formData.bloodGroup}
@@ -167,20 +134,11 @@ const SearchDonors = () => {
           ))}
         </select>
 
-<<<<<<< HEAD
         {/* Region */}
         <select
           className="select select-bordered w-full"
           value={formData.region}
           onChange={(e) => setFormData({ ...formData, region: e.target.value })}
-=======
-        <select
-          className="select select-bordered w-full"
-          value={formData.region}
-          onChange={(e) =>
-            setFormData({ ...formData, region: e.target.value })
-          }
->>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
         >
           <option value="">Select Region</option>
           {regionsData.map((r) => (
@@ -190,21 +148,11 @@ const SearchDonors = () => {
           ))}
         </select>
 
-<<<<<<< HEAD
         {/* District */}
         <select
           className="select select-bordered w-full"
           value={formData.district}
           onChange={(e) => setFormData({ ...formData, district: e.target.value })}
-=======
-
-        <select
-          className="select select-bordered w-full"
-          value={formData.district}
-          onChange={(e) =>
-            setFormData({ ...formData, district: e.target.value })
-          }
->>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
           disabled={!filteredDistricts.length}
         >
           <option value="">Select District</option>
@@ -223,10 +171,7 @@ const SearchDonors = () => {
         </button>
       </form>
 
-<<<<<<< HEAD
       {/* Donors List */}
-=======
->>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
       {loading ? (
         <p className="text-center text-gray-500 mt-8">Loading...</p>
       ) : donors.length ? (
@@ -268,13 +213,7 @@ const SearchDonors = () => {
           ))}
         </div>
       ) : (
-<<<<<<< HEAD
         <p className="text-center text-slate-950 mt-8">No donors found.</p>
-=======
-        <p className="text-center text-gray-500 mt-8">
-          No donors found.
-        </p>
->>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
       )}
     </div>
   );
