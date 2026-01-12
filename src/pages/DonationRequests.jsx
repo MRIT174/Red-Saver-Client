@@ -54,8 +54,8 @@ export default function PendingDonationRequests() {
   }
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 py-14">
-      <div className="container mx-auto px-6">
+    <section className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 py-14 ">
+      <div className="container mx-auto px-6 max-w-7xl">
         {/* ---------- Title ---------- */}
         <h1 className="text-2xl md:text-4xl font-extrabold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-red-600">
           Pending Blood Donation Requests

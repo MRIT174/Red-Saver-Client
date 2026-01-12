@@ -98,6 +98,9 @@ const Navbar = () => {
             <NavLink to="/funding" className={navLinkClass}>
               Funding
             </NavLink>
+            <NavLink to="/about-us" className={navLinkClass}>
+              About Us
+            </NavLink>
           </div>
 
           {/* Right Side */}

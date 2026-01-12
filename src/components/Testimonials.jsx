@@ -29,7 +29,7 @@ const Testimonials = () => {
       content:
         "Donating blood through RedSaver has been one of the most fulfilling experiences. Knowing that my donation can save up to three lives is incredibly rewarding. The whole process is seamless and the staff is so professional.",
       rating: 5,
-      avatar: "/professional-woman-avatar.png",
+      avatar: "https://static.vecteezy.com/system/resources/thumbnails/048/216/761/small/modern-male-avatar-with-black-hair-and-hoodie-illustration-free-png.png",
       delay: 0,
     },
     {
@@ -40,7 +40,7 @@ const Testimonials = () => {
       content:
         "I was nervous about donating for the first time, but the RedSaver app made everything so easy. The step-by-step guidance and supportive community gave me confidence. I'm proud to be a lifesaver now!",
       rating: 5,
-      avatar: "/professional-man-avatar.png",
+      avatar: "https://img.freepik.com/premium-vector/man-avatar-profile-picture-isolated-background-avatar-profile-picture-man_1293239-4841.jpg?semt=ais_hybrid&w=740&q=80",
       delay: 100,
     },
     {
@@ -51,7 +51,7 @@ const Testimonials = () => {
       content:
         "I've been donating for over 5 years now, and RedSaver has made it so convenient. The health benefits are real, and the community events are amazing. This is how technology should serve humanity.",
       rating: 5,
-      avatar: "/woman-avatar-friendly.jpg",
+      avatar: "https://static.vecteezy.com/ti/vecteur-libre/p1/10967316-avatar-homme-barbu-gratuit-vectoriel.jpg",
       delay: 200,
     },
   ];
@@ -87,7 +87,7 @@ const Testimonials = () => {
         </svg>
       </div>
 
-      <div className="container mx-auto px-4 md:px-8 relative z-10 max-w-7xl mx-auto">
+      <div className="container px-4 md:px-8 relative z-10 max-w-7xl mx-auto">
         {/* Heading */}
         <div className={`text-center mb-16 md:mb-20 transition-all duration-1000 ${isLoaded ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
           <p className="text-sm font-semibold tracking-widest text-red-400 uppercase mb-3">✦ Donor Stories</p>
