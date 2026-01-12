@@ -1,16 +1,8 @@
-<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-fade";
-=======
-import React from "react";
-import { useNavigate } from "react-router";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
-import "swiper/css";
->>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
 
 const images = [
   "https://img.freepik.com/premium-vector/world-blood-day-concept-vector-flat-illustrations_199064-821.jpg?w=740&q=80",
@@ -19,7 +11,6 @@ const images = [
 ];
 
 const Banner = () => {
-<<<<<<< HEAD
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -134,59 +125,6 @@ const Banner = () => {
 
       <div className="absolute top-20 right-10 w-20 h-20 bg-red-500/10 rounded-lg transform rotate-45 animate-bounce" style={{ animationDelay: "0s" }} />
       <div className="absolute bottom-20 left-10 w-16 h-16 bg-blue-500/10 rounded-lg transform rotate-45 animate-bounce" style={{ animationDelay: "0.5s" }} />
-=======
-  const navigate = useNavigate();
-
-  return (
-    <section className="bg-red-500 text-white py-12 md:py-16">
-      <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <div className="flex justify-center md:justify-end">
-          <Swiper
-            modules={[Autoplay]}
-            autoplay={{ delay: 3000, disableOnInteraction: false }}
-            loop={true}
-            slidesPerView={1}
-            className="w-56 sm:w-64 md:w-72 lg:w-80 rounded-lg shadow-lg"
-          >
-            {images.map((img, index) => (
-              <SwiperSlide key={index}>
-                <img
-                  src={img}
-                  alt={`Slide ${index + 1}`}
-                  className="w-full h-auto rounded-lg"
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-
-        <div className="text-center md:text-left md:mr-28">
-          <h1 className="text-3xl md:text-5xl font-bold mb-4">
-            Join the Life Saving Community
-          </h1>
-
-          <p className="mb-6 text-base md:text-xl">
-            Donate blood, save lives. Be a hero today.
-          </p>
-
-          <div className="flex justify-center md:justify-start gap-3 flex-wrap">
-            <button
-              className="btn btn-primary btn-md md:btn-lg"
-              onClick={() => navigate("/register")}
-            >
-              Join as a Donor
-            </button>
-
-            <button
-              className="btn btn-outline btn-md md:btn-lg text-white border-white hover:bg-white hover:text-red-500"
-              onClick={() => navigate("/search-donors")}
-            >
-              Search Donors
-            </button>
-          </div>
-        </div>
-      </div>
->>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
     </section>
   );
 };

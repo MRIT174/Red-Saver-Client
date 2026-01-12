@@ -1,5 +1,4 @@
 import { NavLink, Outlet } from "react-router";
-<<<<<<< HEAD
 import { FaBars } from "react-icons/fa";
 import { Home, Droplet, UserCheck } from "lucide-react";
 import { motion } from "framer-motion";
@@ -22,26 +21,10 @@ const VolunteerDashboardLayout = () => {
             whileTap={{ scale: 0.97 }}
             transition={{ duration: 0.2 }}
           >
-=======
-import { FaHome, FaTint, FaBars } from "react-icons/fa";
-
-const VolunteerDashboardLayout = () => {
-  return (
-    <div className="flex min-h-screen bg-base-200">
-      <aside className="w-64 bg-base-100 shadow-xl flex flex-col fixed h-screen">
-        <div className="p-6 bg-red-500 text-white">
-          <h2 className="text-2xl font-extrabold">🩸 BloodCare</h2>
-          <p className="text-sm opacity-90">Volunteer Panel</p>
-        </div>
-
-        <ul className="menu p-4 gap-1 flex-1 overflow-y-auto">
-          <li>
->>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
             <NavLink
               to="/volunteer"
               end
               className={({ isActive }) =>
-<<<<<<< HEAD
                 isActive
                   ? "bg-red-500 text-white font-semibold rounded-lg px-3 py-2 flex items-center gap-2"
                   : "px-3 py-2 rounded-lg flex items-center gap-2 hover:bg-red-500 hover:text-white transition-colors duration-200"
@@ -80,40 +63,10 @@ const VolunteerDashboardLayout = () => {
         >
           <div className="flex-none lg:hidden">
             <label htmlFor="volunteer-drawer" className="btn btn-square btn-ghost text-gray-200">
-=======
-                isActive ? "bg-red-500 text-white font-semibold" : ""
-              }
-            >
-              <FaHome /> Dashboard Home
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
-              to="/volunteer/all-blood-donation-request"
-              className={({ isActive }) =>
-                isActive ? "bg-red-500 text-white font-semibold" : ""
-              }
-            >
-              <FaTint /> Blood Requests
-            </NavLink>
-          </li>
-        </ul>
-      </aside>
-
-      <div className="flex-1 ml-64 flex flex-col">
-        <div className="navbar bg-base-100 shadow-md px-4 sticky top-0 z-10">
-          <div className="flex-none lg:hidden">
-            <label
-              htmlFor="volunteer-drawer"
-              className="btn btn-square btn-ghost"
-            >
->>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
               <FaBars />
             </label>
           </div>
           <div className="flex-1">
-<<<<<<< HEAD
             <h1 className="text-xl font-bold text-red-500 flex items-center gap-2">
               <UserCheck size={20} /> Volunteer Dashboard
             </h1>
@@ -131,20 +84,6 @@ const VolunteerDashboardLayout = () => {
         >
           <Outlet />
         </motion.main>
-=======
-            <h1 className="text-xl font-bold text-red-500">
-              Volunteer Dashboard
-            </h1>
-          </div>
-           <NavLink to="/" className="btn btn-outline btn-md md:btn-lg">
-            Home
-          </NavLink>
-        </div>
-
-        <main className="p-6">
-          <Outlet />
-        </main>
->>>>>>> a2e78ce28173195a78fb092cf2a8ef925e69470e
       </div>
     </div>
   );
